@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LoanInterestCalculator.Core.Loan
+namespace LoanInterestCalculator.Core.Loans
 {
     public readonly struct AnnualInterestRate
     {
@@ -17,15 +17,20 @@ namespace LoanInterestCalculator.Core.Loan
             TotalAnnuity = CalculateAnnuity();
         }
 
-        private decimal CalculateMonthlyPercentage()
+        public decimal GetMonthlyPercentageRate()
         {
-            var monthlyPercentage =  _percentage.Percentage / _interval.PerYear;
-            return 1m / (1m + monthlyPercentage);
+            return  _percentage.Percentage / _interval.PerYear;
+        }
+
+        private decimal GetYearlyPercentageRate()
+        {
+            var monthlyPercentageRate = GetMonthlyPercentageRate();
+            return 1m / (1m + monthlyPercentageRate);
         }
 
         public decimal CalculateAnnuity()
         {
-            var monthlyPercentage = CalculateMonthlyPercentage();
+            var monthlyPercentage = GetYearlyPercentageRate();
             var annuityTotal =
                 (_percentage.Percentage * _loanAmount.Amount) / (1m - ((decimal)Math.Pow((double)monthlyPercentage,(double)_interval.Total)));
             

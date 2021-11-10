@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LoanInterestCalculator.Core.Loan
+namespace LoanInterestCalculator.Core.Loans
 {
     public class InterestPercentage : IComparable<InterestPercentage>
     {

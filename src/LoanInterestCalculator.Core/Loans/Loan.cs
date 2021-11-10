@@ -1,4 +1,4 @@
-﻿namespace LoanInterestCalculator.Core.Loan
+﻿namespace LoanInterestCalculator.Core.Loans
 {
     /// <summary>
     /// Represents our entity
@@ -20,7 +20,12 @@
 
         public NumberOfYears NumberOfYears { get; }
 
-        public decimal MonthlyPayment => new AnnualInterestRate(Interval, InterestPercentage, LoanAmount).TotalAnnuity;
+        public AnnualInterestRate AnnualInterestRate =>
+            new AnnualInterestRate(Interval, InterestPercentage, LoanAmount);
+
+        public decimal MonthlyPercentageInterestRate => AnnualInterestRate.GetMonthlyPercentageRate();
+
+        public decimal MonthlyPayment => AnnualInterestRate.TotalAnnuity;
 
         public decimal TotalAmountToPayBack => MonthlyPayment * (decimal)Interval.Total;
 

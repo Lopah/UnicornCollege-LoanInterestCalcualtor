@@ -1,4 +1,4 @@
-﻿namespace LoanInterestCalculator.Core.Loan
+﻿namespace LoanInterestCalculator.Core.Loans
 {
     public readonly struct LoanAmount
     {
