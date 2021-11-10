@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanInterestCalculator.App", "src\LoanInterestCalculator.App\LoanInterestCalculator.App.csproj", "{D335524C-8998-4EFC-B863-67FE6D6FD094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanInterestCalculator.Core", "src\LoanInterestCalculator.Core\LoanInterestCalculator.Core.csproj", "{FFF3DA49-5ABB-4ABF-BE2F-B20E9603815A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CB42CCBD-2EBC-4605-B80F-0282829EA466}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanInterestCalculator.UAT", "tests\LoanInterestCalculator.UAT\LoanInterestCalculator.UAT.csproj", "{970C015A-6DC8-4D50-955D-DEA390BA86E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D335524C-8998-4EFC-B863-67FE6D6FD094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D335524C-8998-4EFC-B863-67FE6D6FD094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D335524C-8998-4EFC-B863-67FE6D6FD094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D335524C-8998-4EFC-B863-67FE6D6FD094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF3DA49-5ABB-4ABF-BE2F-B20E9603815A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF3DA49-5ABB-4ABF-BE2F-B20E9603815A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF3DA49-5ABB-4ABF-BE2F-B20E9603815A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF3DA49-5ABB-4ABF-BE2F-B20E9603815A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970C015A-6DC8-4D50-955D-DEA390BA86E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970C015A-6DC8-4D50-955D-DEA390BA86E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970C015A-6DC8-4D50-955D-DEA390BA86E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970C015A-6DC8-4D50-955D-DEA390BA86E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{970C015A-6DC8-4D50-955D-DEA390BA86E3} = {CB42CCBD-2EBC-4605-B80F-0282829EA466}
+	EndGlobalSection
+EndGlobal
