@@ -5,7 +5,7 @@ namespace LoanInterestCalculator.Core.Loans
     public readonly struct Interval
     {
         public int PerYear { get; }
-        
+
         public int Total { get; }
 
         public Interval(IntervalType intervalType, NumberOfYears numberOfYears) : this()

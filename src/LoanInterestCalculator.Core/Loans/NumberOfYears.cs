@@ -8,6 +8,7 @@ namespace LoanInterestCalculator.Core.Loans
         {
             Value = value;
         }
+
         public int Value { get; }
 
         /// <summary>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</summary>

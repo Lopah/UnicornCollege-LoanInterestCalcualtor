@@ -5,13 +5,15 @@
     /// </summary>
     public class Loan
     {
-        public Loan(LoanAmount loanAmount, InterestPercentage percentage, NumberOfYears numberOfYears, Interval interval)
+        public Loan(LoanAmount loanAmount, InterestPercentage percentage, NumberOfYears numberOfYears,
+            Interval interval)
         {
             LoanAmount = loanAmount;
             InterestPercentage = percentage;
             NumberOfYears = numberOfYears;
             Interval = interval;
         }
+
         public LoanAmount LoanAmount { get; }
 
         public Interval Interval { get; }

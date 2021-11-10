@@ -8,10 +8,11 @@ namespace LoanInterestCalculator.Core.Loans
         {
             Value = rawPercentageValue;
         }
+
         /// <summary>
         /// Represents the percentage raw value (what should be formatted as this value + %)
         /// </summary>
-        public int Value { get;}
+        public int Value { get; }
 
         /// <summary>
         /// The percentage amount converted to raw value.

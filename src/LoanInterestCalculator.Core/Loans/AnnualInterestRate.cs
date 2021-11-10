@@ -19,7 +19,7 @@ namespace LoanInterestCalculator.Core.Loans
 
         public decimal GetMonthlyPercentageRate()
         {
-            return  _percentage.Percentage / _interval.PerYear;
+            return _percentage.Percentage / _interval.PerYear;
         }
 
         private decimal GetYearlyPercentageRate()
@@ -32,16 +32,16 @@ namespace LoanInterestCalculator.Core.Loans
         {
             var monthlyPercentage = GetYearlyPercentageRate();
             var annuityTotal =
-                (_percentage.Percentage * _loanAmount.Amount) / (1m - ((decimal)Math.Pow((double)monthlyPercentage,(double)_interval.Total)));
-            
-            
-            var annuity = annuityTotal/ _interval.PerYear;
+                (_percentage.Percentage * _loanAmount.Amount) /
+                (1m - ((decimal)Math.Pow((double)monthlyPercentage, (double)_interval.Total)));
+
+
+            var annuity = annuityTotal / _interval.PerYear;
 
             return Math.Round(annuity, 2, MidpointRounding.ToEven);
         }
-        
+
 
         public decimal TotalAnnuity { get; }
-
     }
 }
