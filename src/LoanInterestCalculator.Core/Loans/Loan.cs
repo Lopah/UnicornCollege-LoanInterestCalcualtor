@@ -1,4 +1,9 @@
-﻿namespace LoanInterestCalculator.Core.Loans
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+
+namespace LoanInterestCalculator.Core.Loans
 {
     /// <summary>
     /// Represents our entity
@@ -19,7 +24,7 @@
         public Interval Interval { get; }
 
         public InterestPercentage InterestPercentage { get; }
-
+        
         public NumberOfYears NumberOfYears { get; }
 
         public AnnualInterestRate AnnualInterestRate =>
