@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:LoanInterestCalculator"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="590">
     <DataGrid Name="RepaymentCalendarGrid" HorizontalAlignment="Left" Margin="10, 10,0, 0"
                   VerticalAlignment="Top" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserAddRows="False"
-              DataContext="{Binding Loan}">
+              DataContext="{Binding RepaymentRows}">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Order" Binding="{Binding Order}" CanUserSort="True" CanUserReorder="False" CanUserResize="False"/>
             <DataGridTextColumn Header="Payment(CZK)" Binding="{Binding PaymentAmount}" CanUserReorder="False" CanUserResize="False" />

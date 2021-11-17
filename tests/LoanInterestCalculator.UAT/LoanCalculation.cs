@@ -35,7 +35,7 @@ namespace LoanInterestCalculator.UAT
                 new LoanAmount(loanedAmount),
                 new InterestPercentage(interestPercentage),
                 numberOfYears,
-                new Interval(interval, numberOfYears));
+                interval);
 
             actualLoan.MonthlyPayment.Should().Be(expectedAmounts.PaymentsAverageAmount);
             actualLoan.TotalAmountToPayBack.Should().Be(expectedAmounts.TotalRepaid);
@@ -60,7 +60,7 @@ namespace LoanInterestCalculator.UAT
                 new LoanAmount(loanedAmount),
                 new InterestPercentage(interestPercentage),
                 numberOfYears,
-                new Interval(interval, numberOfYears));
+                interval);
 
             var repaymentPlan = new RepaymentCalendar(loan);
 

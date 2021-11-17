@@ -1,79 +1,100 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using JetBrains.Annotations;
 using LoanInterestCalculator.Commands;
 using LoanInterestCalculator.Core.Loans;
+using LoanInterestCalculator.Core.RepaymentCalendars;
 
 namespace LoanInterestCalculator.ViewModels;
 
-public class LoanCalculatorViewModel
+public class LoanCalculatorViewModel : INotifyPropertyChanged
 {
-    private RepaymentCalendarViewModel _repaymentCalendarView;
-    private ICommand calculateLoanButton;
+    private ICommand _calculateLoanButton;
     private Loan _loan;
-    public ICommand CalculateCommand
-    {
-        get => calculateLoanButton is null ? new CalculateLoanCommand() : calculateLoanButton;
-        set => calculateLoanButton = value;
-    }
+    private RepaymentCalendarViewModel _repaymentCalendarViewModel;
+    
+    [UsedImplicitly]
+    public ICommand CalculateCommand => new CalculateLoanCommand(this, _loan);
 
     public decimal LoanAmount
     {
-        get
+        get => _loan.LoanAmount.Amount;
+        set
         {
-            return _loan.LoanAmount.Amount;
+            _loan.SetLoanAmount(new(value));
+            OnPropertyChanged();
         }
     }
 
     public int InterestPercentage
     {
-        get
+        get => _loan.InterestPercentage.Value;
+        set
         {
-            return _loan.InterestPercentage.Value;
+            _loan.SetInterestPercentage(new(value));
+            OnPropertyChanged();
         }
     }
 
     public int NumberOfYears
     {
-        get
+        get => _loan.NumberOfYears.Value;
+        set
         {
-            return _loan.NumberOfYears.Value;
+            _loan.SetNumberOfYears(new(value));
+            OnPropertyChanged();
         }
     }
 
-    public decimal AveragePayment
+    public IntervalType IntervalType
     {
-        get
+        get => _loan.IntervalType;
+        set
         {
-            return _loan.MonthlyPayment;
+            _loan.SetIntervalType(value);
+            OnPropertyChanged();
         }
     }
 
-    public decimal TotalPaidOut
-    {
-        get
-        {
-            return _loan.TotalAmountToPayBack;
-        }
-    }
+    public decimal AveragePayment { get; private set; }
 
-    public decimal DebtPaidOut
-    {
-        get
-        {
-            return _loan.InterestToBePaidTotal;
-        }
-    }
+    public decimal TotalPaidOut { get; private set; }
 
-    public Interval Interval
-    {
-        get => _loan.Interval;
-    }
+    public decimal DebtPaidOut { get; private set; }
     public LoanCalculatorViewModel()
     {
         _loan = new Loan(
             new LoanAmount(2000000m),
             new InterestPercentage(4),
             new NumberOfYears(20),
-            new Interval(IntervalType.Yearly, new NumberOfYears(20)));
+            IntervalType.Yearly);
+    }
 
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Raises <see cref="PropertyChangedEventArgs"/> when property changes
+    /// </summary>
+    /// <param name="propertyName">String representing the property name</param>
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    internal void CalculateLoanSummary()
+    {
+        AveragePayment = _loan.MonthlyPayment;
+        OnPropertyChanged(nameof(AveragePayment));
+
+        TotalPaidOut = _loan.TotalAmountToPayBack;
+        OnPropertyChanged(nameof(TotalPaidOut));
+
+        DebtPaidOut = _loan.InterestToBePaidTotal;
+        OnPropertyChanged(nameof(DebtPaidOut));
+
+        _repaymentCalendarViewModel = new RepaymentCalendarViewModel(new RepaymentCalendar(_loan));
+        OnPropertyChanged(nameof(RepaymentCalendarViewModel));
     }
 }

@@ -1,5 +1,5 @@
-﻿using LoanInterestCalculator.ViewModels;
-using System.Windows;
+﻿using System.Windows;
+using LoanInterestCalculator.ViewModels;
 
 namespace LoanInterestCalculator
 {
@@ -13,7 +13,7 @@ namespace LoanInterestCalculator
         public MainWindow()
         {
             InitializeComponent();
-            _loanCalculatorViewModel = new LoanCalculatorViewModel();
+            _loanCalculatorViewModel = new();
             DataContext = _loanCalculatorViewModel;
         }
     }

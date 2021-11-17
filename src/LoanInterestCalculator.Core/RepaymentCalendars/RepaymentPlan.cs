@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using LoanInterestCalculator.Core.Loans;
+﻿using LoanInterestCalculator.Core.Loans;
 
 namespace LoanInterestCalculator.Core.RepaymentCalendars
 {

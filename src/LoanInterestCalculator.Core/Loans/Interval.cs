@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LoanInterestCalculator.Core.Loans
+﻿namespace LoanInterestCalculator.Core.Loans
 {
     public readonly struct Interval
     {

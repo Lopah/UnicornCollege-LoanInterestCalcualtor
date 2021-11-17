@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
-
-namespace LoanInterestCalculator.Core.Loans
+﻿namespace LoanInterestCalculator.Core.Loans
 {
     /// <summary>
     /// Represents our entity
@@ -11,24 +6,26 @@ namespace LoanInterestCalculator.Core.Loans
     public class Loan
     {
         public Loan(LoanAmount loanAmount, InterestPercentage percentage, NumberOfYears numberOfYears,
-            Interval interval)
+            IntervalType intervalType)
         {
             LoanAmount = loanAmount;
             InterestPercentage = percentage;
             NumberOfYears = numberOfYears;
-            Interval = interval;
+            IntervalType = intervalType;
+            Interval = new(intervalType, numberOfYears);
         }
 
-        public LoanAmount LoanAmount { get; }
+        public LoanAmount LoanAmount { get; private set; }
 
-        public Interval Interval { get; }
+        public IntervalType IntervalType { get; private set; }
 
-        public InterestPercentage InterestPercentage { get; }
-        
-        public NumberOfYears NumberOfYears { get; }
+        public Interval Interval { get; private set; }
 
-        public AnnualInterestRate AnnualInterestRate =>
-            new AnnualInterestRate(Interval, InterestPercentage, LoanAmount);
+        public InterestPercentage InterestPercentage { get; private set; }
+
+        public NumberOfYears NumberOfYears { get; private set; }
+
+        public AnnualInterestRate AnnualInterestRate => new(Interval, InterestPercentage, LoanAmount);
 
         public decimal MonthlyPercentageInterestRate => AnnualInterestRate.GetMonthlyPercentageRate();
 
@@ -37,5 +34,27 @@ namespace LoanInterestCalculator.Core.Loans
         public decimal TotalAmountToPayBack => MonthlyPayment * (decimal)Interval.Total;
 
         public decimal InterestToBePaidTotal => TotalAmountToPayBack - LoanAmount.Amount;
+
+        public void SetLoanAmount(LoanAmount amount)
+        {
+            LoanAmount = amount;
+        }
+
+        public void SetInterestPercentage(InterestPercentage interestPercentage)
+        {
+            InterestPercentage = interestPercentage;
+        }
+
+        public void SetNumberOfYears(NumberOfYears years)
+        {
+            NumberOfYears = years;
+            Interval = new(IntervalType, years);
+        }
+
+        public void SetIntervalType(IntervalType intervalType)
+        {
+            IntervalType = intervalType;
+            Interval = new Interval(intervalType, NumberOfYears);
+        }
     }
 }
