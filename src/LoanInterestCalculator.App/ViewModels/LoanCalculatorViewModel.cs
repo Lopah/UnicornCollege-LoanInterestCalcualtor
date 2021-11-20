@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using JetBrains.Annotations;
-using LoanInterestCalculator.Commands;
 using LoanInterestCalculator.Commands.Base;
 using LoanInterestCalculator.Core.Loans;
 using LoanInterestCalculator.Core.RepaymentCalendars;
@@ -14,14 +13,16 @@ using Microsoft.Win32;
 
 namespace LoanInterestCalculator.ViewModels;
 
-public class LoanCalculatorViewModel : INotifyPropertyChanged
+public sealed class LoanCalculatorViewModel : INotifyPropertyChanged
 {
     public Loan Loan { get; private set; }
 
     public RepaymentCalendarViewModel? RepaymentCalendarViewModel { get; private set; }
 
     [UsedImplicitly]
-    public ICommand CalculateCommand => new RelayCommand((_) => CalculateLoanSummary(), () => true);
+    public ICommand CalculateCommand =>
+        new RelayCommand((_) => CalculateLoanSummary(),
+            () => LoanAmount > 0 && InterestPercentage > 0 && NumberOfYears > 0);
 
     [UsedImplicitly]
     public ICommand GenerateExportCommand => new RelayCommand((_) => ExportToCsv(),
@@ -49,6 +50,7 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
         sDialog.ShowDialog();
     }
 
+    [UsedImplicitly]
     public decimal LoanAmount
     {
         get => Loan.LoanAmount.Amount;
@@ -59,6 +61,7 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
         }
     }
 
+    [UsedImplicitly]
     public int InterestPercentage
     {
         get => Loan.InterestPercentage.Value;
@@ -69,6 +72,7 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
         }
     }
 
+    [UsedImplicitly]
     public int NumberOfYears
     {
         get => Loan.NumberOfYears.Value;
@@ -79,6 +83,7 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
         }
     }
 
+    [UsedImplicitly]
     public IntervalType IntervalType
     {
         get => Loan.IntervalType;
@@ -111,12 +116,12 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
     /// </summary>
     /// <param name="propertyName">String representing the property name</param>
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    internal void CalculateLoanSummary()
+    private void CalculateLoanSummary()
     {
         AveragePayment = Loan.MonthlyPayment;
         OnPropertyChanged(nameof(AveragePayment));
