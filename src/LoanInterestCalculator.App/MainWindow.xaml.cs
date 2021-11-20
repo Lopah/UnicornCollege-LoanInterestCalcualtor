@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using LoanInterestCalculator.Core.RepaymentCalendars;
 using LoanInterestCalculator.ViewModels;
 
 namespace LoanInterestCalculator
@@ -8,13 +9,10 @@ namespace LoanInterestCalculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly LoanCalculatorViewModel _loanCalculatorViewModel;
-
-        public MainWindow()
+        public MainWindow(LoanCalculatorViewModel loanCalculatorViewModel)
         {
             InitializeComponent();
-            _loanCalculatorViewModel = new();
-            DataContext = _loanCalculatorViewModel;
+            DataContext = loanCalculatorViewModel;
         }
     }
 }

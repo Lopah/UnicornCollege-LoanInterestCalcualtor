@@ -9,11 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="HandyControls" Version="3.3.8.1" />
+        <PackageReference Include="HandyControls" Version="3.3.8.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LoanInterestCalculator.Core\LoanInterestCalculator.Core.csproj" />
+        <ProjectReference Include="..\LoanInterestCalculator.Core\LoanInterestCalculator.Core.csproj" />
     </ItemGroup>
 
 </Project>

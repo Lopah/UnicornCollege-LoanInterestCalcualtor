@@ -1,58 +1,90 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using JetBrains.Annotations;
 using LoanInterestCalculator.Commands;
+using LoanInterestCalculator.Commands.Base;
 using LoanInterestCalculator.Core.Loans;
 using LoanInterestCalculator.Core.RepaymentCalendars;
+using LoanInterestCalculator.Helpers;
+using Microsoft.Win32;
 
 namespace LoanInterestCalculator.ViewModels;
 
 public class LoanCalculatorViewModel : INotifyPropertyChanged
 {
-    private ICommand _calculateLoanButton;
-    private Loan _loan;
-    private RepaymentCalendarViewModel _repaymentCalendarViewModel;
-    
+    public Loan Loan { get; private set; }
+
+    public RepaymentCalendarViewModel? RepaymentCalendarViewModel { get; private set; }
+
     [UsedImplicitly]
-    public ICommand CalculateCommand => new CalculateLoanCommand(this, _loan);
+    public ICommand CalculateCommand => new RelayCommand((_) => CalculateLoanSummary(), () => true);
+
+    [UsedImplicitly]
+    public ICommand GenerateExportCommand => new RelayCommand((_) => ExportToCsv(),
+        () => RepaymentCalendarViewModel?.RepaymentRows.Count > 0);
+
+    private void ExportToCsv()
+    {
+        var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var sDialog = new SaveFileDialog
+        {
+            InitialDirectory = basePath,
+            Filter = "CSV file (*.csv)|*.csv| All Files (*.*)|*.*",
+            Title = "Save Repayment Calendar",
+            CreatePrompt = true,
+            OverwritePrompt = true,
+            DefaultExt = ".csv",
+            AddExtension = true,
+            ValidateNames = true,
+            FileName = $"Repayment-Calendar_{DateTime.Now:hh-mm-ss}"
+        };
+
+        sDialog.FileOk += async (_, _) =>
+            await EnumerableToCsvHelper.GenerateCsv(RepaymentCalendarViewModel!.RepaymentRows, sDialog.OpenFile());
+        
+        sDialog.ShowDialog();
+    }
 
     public decimal LoanAmount
     {
-        get => _loan.LoanAmount.Amount;
+        get => Loan.LoanAmount.Amount;
         set
         {
-            _loan.SetLoanAmount(new(value));
+            Loan.SetLoanAmount(new(value));
             OnPropertyChanged();
         }
     }
 
     public int InterestPercentage
     {
-        get => _loan.InterestPercentage.Value;
+        get => Loan.InterestPercentage.Value;
         set
         {
-            _loan.SetInterestPercentage(new(value));
+            Loan.SetInterestPercentage(new(value));
             OnPropertyChanged();
         }
     }
 
     public int NumberOfYears
     {
-        get => _loan.NumberOfYears.Value;
+        get => Loan.NumberOfYears.Value;
         set
         {
-            _loan.SetNumberOfYears(new(value));
+            Loan.SetNumberOfYears(new(value));
             OnPropertyChanged();
         }
     }
 
     public IntervalType IntervalType
     {
-        get => _loan.IntervalType;
+        get => Loan.IntervalType;
         set
         {
-            _loan.SetIntervalType(value);
+            Loan.SetIntervalType(value);
             OnPropertyChanged();
         }
     }
@@ -62,12 +94,13 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
     public decimal TotalPaidOut { get; private set; }
 
     public decimal DebtPaidOut { get; private set; }
+
     public LoanCalculatorViewModel()
     {
-        _loan = new Loan(
-            new LoanAmount(2000000m),
-            new InterestPercentage(4),
-            new NumberOfYears(20),
+        Loan = new Loan(
+            new LoanAmount(0m),
+            new InterestPercentage(0),
+            new NumberOfYears(0),
             IntervalType.Yearly);
     }
 
@@ -85,16 +118,18 @@ public class LoanCalculatorViewModel : INotifyPropertyChanged
 
     internal void CalculateLoanSummary()
     {
-        AveragePayment = _loan.MonthlyPayment;
+        AveragePayment = Loan.MonthlyPayment;
         OnPropertyChanged(nameof(AveragePayment));
 
-        TotalPaidOut = _loan.TotalAmountToPayBack;
+        TotalPaidOut = Loan.TotalAmountToPayBack;
         OnPropertyChanged(nameof(TotalPaidOut));
 
-        DebtPaidOut = _loan.InterestToBePaidTotal;
+        DebtPaidOut = Loan.InterestToBePaidTotal;
         OnPropertyChanged(nameof(DebtPaidOut));
 
-        _repaymentCalendarViewModel = new RepaymentCalendarViewModel(new RepaymentCalendar(_loan));
+        RepaymentCalendarViewModel = new RepaymentCalendarViewModel(new RepaymentCalendar(Loan));
         OnPropertyChanged(nameof(RepaymentCalendarViewModel));
+        
+        
     }
 }

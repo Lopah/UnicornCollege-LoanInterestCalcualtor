@@ -1,19 +1,22 @@
-﻿using LoanInterestCalculator.ViewModels;
+﻿using System.Collections.ObjectModel;
+using LoanInterestCalculator.ViewModels;
 using System.Windows.Controls;
+using LoanInterestCalculator.Core.RepaymentCalendars;
 
 namespace LoanInterestCalculator;
 
 public partial class RepaymentCalendarControl : UserControl
 {
-    private readonly RepaymentCalendarViewModel _repaymentCalendarViewModel;
     public RepaymentCalendarControl()
     {
-
+        InitializeComponent();
     }
-    public RepaymentCalendarControl(RepaymentCalendarViewModel repaymentCalendar)
+
+    public RepaymentCalendarControl(RepaymentCalendarViewModel repaymentCalendar) : this()
     {
         InitializeComponent();
-        _repaymentCalendarViewModel = repaymentCalendar;
-        DataContext = _repaymentCalendarViewModel;
+        DataContext = repaymentCalendar;
+        var collection = new ObservableCollection<RepaymentRow>(repaymentCalendar.RepaymentRows);
+        RepaymentCalendarGrid.ItemsSource = collection;
     }
 }

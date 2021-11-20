@@ -1,16 +1,17 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LoanInterestCalculator"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:converters="clr-namespace:LoanInterestCalculator.Converters"
-        xmlns:system="clr-namespace:System;assembly=System.Runtime"
-        xmlns:core="clr-namespace:LoanInterestCalculator.Core.Loans;assembly=LoanInterestCalculator.Core"
-        Style="{DynamicResource WindowStyle1}" x:Class="LoanInterestCalculator.MainWindow"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="770" Width="600" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:LoanInterestCalculator"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:core="clr-namespace:LoanInterestCalculator.Core.Loans;assembly=LoanInterestCalculator.Core"
+    xmlns:viewModels="clr-namespace:LoanInterestCalculator.ViewModels"
+    Style="{DynamicResource WindowStyle1}" x:Class="LoanInterestCalculator.MainWindow"
+    mc:Ignorable="d"
+    Title="Interest Calculator" Height="770" Width="600" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen"
+    d:DataContext="{viewModels:LoanCalculatorViewModel }">
     <Window.Resources>
         <ObjectDataProvider x:Key="intervalTypes"
                             MethodName="GetValues" ObjectType="{x:Type system:Enum}">
@@ -19,30 +20,34 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ControlTemplate x:Key="WindowTemplateKey" TargetType="{x:Type Window}">
-            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                    Background="{TemplateBinding Background}">
                 <Grid>
                     <AdornerDecorator>
                         <ContentPresenter />
                     </AdornerDecorator>
-                    <ResizeGrip x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" VerticalAlignment="Center" />
+                    <ResizeGrip x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="false"
+                                Visibility="Collapsed" VerticalAlignment="Center" />
                 </Grid>
             </Border>
         </ControlTemplate>
         <Style x:Key="WindowStyle1" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter/>
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
-                    <Setter Property="Template" Value="{StaticResource WindowTemplateKey}"/>
+                    <Setter Property="Template" Value="{StaticResource WindowTemplateKey}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -50,7 +55,8 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                        <Rectangle Margin="2" SnapsToDevicePixels="true"
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -73,30 +79,43 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="loanAmount" Content="_Loan Amount:" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto"/>
+        <Label x:Name="loanAmount" Content="_Loan Amount:" HorizontalAlignment="Stretch" Height="Auto"
+               VerticalAlignment="Stretch" Width="Auto" />
         <TextBox x:Name="LoanAmountText" Grid.Column="1" Margin="2" Text="{Binding LoanAmount, Mode=OneWayToSource}" />
 
-        <Label x:Name="InterestPercentage" Grid.Row="1" Content="_Interest Percentage:" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto"/>
-        <TextBox x:Name="InterestPercentageText" Grid.Column="1" Grid.Row="1" Margin="2" Text="{Binding InterestPercentage, Mode=OneWayToSource}" />
+        <Label x:Name="InterestPercentage" Grid.Row="1" Content="_Interest Percentage:" HorizontalAlignment="Stretch"
+               Height="Auto" VerticalAlignment="Stretch" Width="Auto" />
+        <TextBox x:Name="InterestPercentageText" Grid.Column="1" Grid.Row="1" Margin="2"
+                 Text="{Binding InterestPercentage, Mode=OneWayToSource}" />
 
-        <Label x:Name="NumberOfYears" Grid.Row="2" Content="_NumberOfYears:" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto"/>
-        <TextBox x:Name="NumberOfYearsText" Grid.Column="1" Grid.Row="2" Margin="2" Text="{Binding NumberOfYears, Mode=OneWayToSource}" />
+        <Label x:Name="NumberOfYears" Grid.Row="2" Content="_NumberOfYears:" HorizontalAlignment="Stretch"
+               Height="Auto" VerticalAlignment="Stretch" Width="Auto" />
+        <TextBox x:Name="NumberOfYearsText" Grid.Column="1" Grid.Row="2" Margin="2"
+                 Text="{Binding NumberOfYears, Mode=OneWayToSource}" />
 
-        <Label x:Name="Interval" Grid.Row="3" Content="_Interval:" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto"/>
+        <Label x:Name="Interval" Grid.Row="3" Content="_Interval:" HorizontalAlignment="Stretch" Height="Auto"
+               VerticalAlignment="Stretch" Width="Auto" />
         <ComboBox ItemsSource="{Binding Source={StaticResource intervalTypes}}"
                   SelectedValue="{Binding IntervalType}"
-                  Grid.Column="1" Grid.Row="3" Margin="2"/>
-        <Button Content="Calculate" Grid.Column="1" Grid.Row="4" Width="80" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5" Command="{Binding CalculateCommand}" />
+                  Grid.Column="1" Grid.Row="3" Margin="2" />
+        <Button Content="Calculate" Grid.Column="1" Grid.Row="4" Width="80" Grid.ColumnSpan="2"
+                HorizontalAlignment="Right" Margin="5" Command="{Binding CalculateCommand, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Content="Generate CSV" Grid.Column="3" Grid.Row="4" Width="80" Grid.ColumnSpan="2"
+                HorizontalAlignment="Left" Margin="10" Command="{Binding GenerateExportCommand}"></Button>
 
-        <Label x:Name="AveragePayment" Grid.Column="3" Content="Average Payment:" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto"/>
-        <TextBox x:Name="AveragePaymentText" Grid.Column="4" IsReadOnly="true" Margin="2" Text="{Binding AveragePayment, Mode=OneWay}" />
-        <Label x:Name="TotalPaidOut" Grid.Column="3" Grid.Row="1" Content="Total Paid Out:" HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" />
-        <TextBox x:Name="TotalPaidOutText" Grid.Column="4" Grid.Row="1" IsReadOnly="true" Margin="2" Text="{Binding TotalPaidOut, Mode=OneWay}" />
-        <Label x:Name="InterestPaid" Grid.Column="3" Grid.Row="2" Content="Interest Paid:" HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" />
-        <TextBox x:Name="InterestPaidText" Grid.Column="4" Grid.Row="2" IsReadOnly="true" Margin="2" Text="{Binding DebtPaidOut, Mode=OneWay}" />
-        <hc:Divider Grid.ColumnSpan="5" Margin="0,0,0,0" Grid.Row="5" VerticalAlignment="Top" BorderThickness="10"/>
-        <Grid x:Name="LoanCalculationResults" Grid.Row="5" Grid.ColumnSpan="5">
-        </Grid>
-
+        <Label x:Name="AveragePayment" Grid.Column="3" Content="Average Payment:" HorizontalAlignment="Stretch"
+               Height="Auto" VerticalAlignment="Stretch" Width="Auto" />
+        <TextBox x:Name="AveragePaymentText" Grid.Column="4" IsReadOnly="true" Margin="2"
+                 Text="{Binding AveragePayment, Mode=OneWay}" />
+        <Label x:Name="TotalPaidOut" Grid.Column="3" Grid.Row="1" Content="Total Paid Out:"
+               HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" />
+        <TextBox x:Name="TotalPaidOutText" Grid.Column="4" Grid.Row="1" IsReadOnly="true" Margin="2"
+                 Text="{Binding TotalPaidOut, Mode=OneWay}" />
+        <Label x:Name="InterestPaid" Grid.Column="3" Grid.Row="2" Content="Interest Paid:"
+               HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" />
+        <TextBox x:Name="InterestPaidText" Grid.Column="4" Grid.Row="2" IsReadOnly="true" Margin="2"
+                 Text="{Binding DebtPaidOut, Mode=OneWay}" />
+        <hc:Divider Grid.ColumnSpan="5" Margin="0,0,0,0" Grid.Row="5" VerticalAlignment="Top" BorderThickness="10" />
+        <local:RepaymentCalendarControl Uid="CalendarControl" Grid.Row="5" Grid.ColumnSpan="5" Grid.Column="0" DataContext="{Binding Path=RepaymentCalendarViewModel}"/>
     </Grid>
 </Window>
